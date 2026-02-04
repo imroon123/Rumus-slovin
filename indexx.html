@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Rumus Slovin - Penentuan Sampel Penelitian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-pink-100 min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-purple-600">📊 Kalkulator Rumus Slovin</h1>
+                    <p class="text-gray-600 mt-1">Hitung Jumlah Sampel Penelitian dengan Mudah dan Akurat</p>
+                </div>
+                <div class="text-right hidden md:block">
+                    <span class="inline-block bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold">
+                        Research Tool
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        
+        <!-- Formula Explanation -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">📐 Rumus Slovin</h2>
+            <div class="bg-purple-50 p-6 rounded-lg mb-4">
+                <div class="text-center text-2xl mb-4">
+                    <p class="font-mono font-bold text-purple-900">n = N / (1 + N × e²)</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-white p-4 rounded-lg">
+                        <p class="font-bold text-purple-700">n</p>
+                        <p class="text-gray-600">Jumlah sampel</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg">
+                        <p class="font-bold text-purple-700">N</p>
+                        <p class="text-gray-600">Jumlah populasi</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg">
+                        <p class="font-bold text-purple-700">e</p>
+                        <p class="text-gray-600">Margin of error / batas toleransi kesalahan</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-700 leading-relaxed">
+                <strong>Rumus Slovin</strong> adalah rumus matematika yang digunakan untuk menghitung jumlah sampel minimal 
+                yang diperlukan dalam penelitian ketika ukuran populasi diketahui. Rumus ini dikembangkan oleh Slovin pada tahun 1960 
+                dan sangat populer digunakan dalam penelitian kuantitatif, survei, dan studi observasional.
+            </p>
+        </div>
+
+        <!-- Calculator Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            <!-- Input Form -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">🧮 Kalkulator</h2>
+                
+                <div class="space-y-6">
+                    <!-- Population Input -->
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Jumlah Populasi (N)
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="population" placeholder="Contoh: 1000" 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                               oninput="calculateSample()">
+                        <p class="text-sm text-gray-500 mt-1">Masukkan total jumlah populasi yang akan diteliti</p>
+                    </div>
+
+                    <!-- Margin of Error Input -->
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Margin of Error / Toleransi Kesalahan (e)
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <select id="marginError" 
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                onchange="calculateSample()">
+                            <option value="">-- Pilih Margin of Error --</option>
+                            <option value="0.01">1% (0.01) - Sangat Presisi</option>
+                            <option value="0.05">5% (0.05) - Standar Penelitian</option>
+                            <option value="0.1" selected>10% (0.10) - Toleransi Tinggi</option>
+                            <option value="custom">Custom / Kustom</option>
+                        </select>
+                        <div id="customErrorDiv" class="mt-3 hidden">
+                            <input type="number" id="customError" step="0.01" min="0.01" max="0.99" placeholder="Contoh: 0.05"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                   oninput="calculateSample()">
+                            <p class="text-sm text-gray-500 mt-1">Masukkan nilai desimal (0.01 - 0.99)</p>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Tingkat kesalahan yang dapat ditoleransi dalam pengambilan sampel
+                        </p>
+                    </div>
+
+                    <!-- Calculate Button -->
+                    <button onclick="calculateSample()" 
+                            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-6 py-4 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                        🔢 Hitung Jumlah Sampel
+                    </button>
+
+                    <!-- Reset Button -->
+                    <button onclick="resetCalculator()" 
+                            class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+                        🔄 Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Hasil Perhitungan</h2>
+                
+                <div id="resultContainer" class="space-y-4">
+                    <div class="text-center py-12 text-gray-400">
+                        <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        <p class="text-lg">Masukkan data untuk melihat hasil perhitungan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            
+            <!-- When to Use -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="bg-green-100 p-3 rounded-full mr-3">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Kapan Digunakan?</h3>
+                </div>
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Populasi sudah diketahui jumlahnya</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Penelitian kuantitatif</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Survei dan kuesioner</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Sampling sederhana</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Penelitian deskriptif</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Margin of Error Guide -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="bg-blue-100 p-3 rounded-full mr-3">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Panduan Margin Error</h3>
+                </div>
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">1%</span>
+                        <span>Penelitian sangat presisi, sampel besar</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">5%</span>
+                        <span>Standar penelitian akademis</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">10%</span>
+                        <span>Penelitian eksploratori, toleransi tinggi</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">15%</span>
+                        <span>Studi awal, pilot study</span>
+                    </li>
+                </ul>
+                <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-blue-800">
+                        <strong>Catatan:</strong> Semakin kecil margin of error, semakin besar jumlah sampel yang dibutuhkan.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Advantages & Limitations -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="bg-yellow-100 p-3 rounded-full mr-3">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Kelebihan & Keterbatasan</h3>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <p class="font-semibold text-green-700 text-sm mb-1">Kelebihan:</p>
+                        <ul class="space-y-1 text-gray-700 text-xs">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-1">+</span>
+                                <span>Mudah dan cepat dihitung</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-1">+</span>
+                                <span>Cocok untuk populasi homogen</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-red-700 text-sm mb-1">Keterbatasan:</p>
+                        <ul class="space-y-1 text-gray-700 text-xs">
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-1">-</span>
+                                <span>Tidak cocok untuk populasi heterogen</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-1">-</span>
+                                <span>Tidak memperhitungkan variasi data</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-1">-</span>
+                                <span>Kurang presisi untuk penelitian inferensial</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Examples -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">📚 Contoh Penggunaan</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Example 1 -->
+                <div class="border-2 border-purple-200 rounded-lg p-4 hover:shadow-md transition duration-300">
+                    <h4 class="font-bold text-purple-700 mb-3">Contoh 1: Penelitian Kepuasan Pelanggan</h4>
+                    <div class="space-y-2 text-sm text-gray-700">
+                        <p><strong>Kasus:</strong> Sebuah perusahaan memiliki 5,000 pelanggan dan ingin melakukan survei kepuasan.</p>
+                        <p><strong>Populasi (N):</strong> 5,000</p>
+                        <p><strong>Margin Error (e):</strong> 5% (0.05)</p>
+                        <p><strong>Perhitungan:</strong></p>
+                        <p class="font-mono bg-gray-100 p-2 rounded">n = 5000 / (1 + 5000 × 0.05²)</p>
+                        <p class="font-mono bg-gray-100 p-2 rounded">n = 5000 / (1 + 12.5)</p>
+                        <p class="font-mono bg-gray-100 p-2 rounded">n = 5000 / 13.5</p>
+                        <p class="font-bold text-purple-700">n ≈ 370 responden</p>
+                    </div>
+                    <button onclick="loadExample(5000, 0.05)" 
+                            class="mt-4 w-full bg-purple-100 hover:bg-purple-200 text-purple-700 font-semibold px-4 py-2 rounded transition duration-300">
+                        📝 Coba Contoh Ini
+                    </button>
+                </div>
+
+                <!-- Example 2 -->
+                <div class="border-2 border-pink-200 rounded-lg p-4 hover:shadow-md transition duration-300">
+                    <h4 class="font-bold text-pink-700 mb-3">Contoh 2: Penelitian Akademis Mahasiswa</h4>
+                    <div class="space-y-2 text-sm text-gray-700">
+                        <p><strong>Kasus:</strong> Penelitian tentang gaya belajar mahasiswa di universitas dengan 1,200 mahasiswa.</p>
+                        <p><strong>Populasi (N):</strong> 1,200</p>
+                        <p><strong>Margin Error (e):</strong> 10% (0.10)</p>
+                        <p><strong>Perhitungan:</strong></p>
+                        <p class="font-mono bg-gray-100 p-2 rounded">n = 1200 / (1 + 1200 × 0.10²)</p>
+                        <p class="font-mono bg-gray-100 p-2 rounded">n = 1200 / (1 + 12)</p>
+                        <p class="font-mono bg-gray-100 p-2 rounded">n = 1200 / 13</p>
+                        <p class="font-bold text-pink-700">n ≈ 92 mahasiswa</p>
+                    </div>
+                    <button onclick="loadExample(1200, 0.10)" 
+                            class="mt-4 w-full bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold px-4 py-2 rounded transition duration-300">
+                        📝 Coba Contoh Ini
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">❓ Pertanyaan yang Sering Diajukan (FAQ)</h2>
+            
+            <div class="space-y-4">
+                <details class="bg-gray-50 rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <summary class="font-semibold text-gray-800">Apa itu Rumus Slovin?</summary>
+                    <p class="mt-2 text-gray-600 text-sm">
+                        Rumus Slovin adalah rumus matematika untuk menghitung ukuran sampel minimal yang representatif 
+                        dari suatu populasi dengan tingkat kesalahan tertentu. Rumus ini sangat berguna dalam penelitian 
+                        yang membutuhkan pengambilan sampel.
+                    </p>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <summary class="font-semibold text-gray-800">Berapa margin of error yang ideal?</summary>
+                    <p class="mt-2 text-gray-600 text-sm">
+                        Untuk penelitian akademis, margin of error 5% adalah standar yang paling umum digunakan. 
+                        Untuk penelitian yang membutuhkan presisi tinggi, gunakan 1%. Untuk studi eksploratori atau 
+                        pilot study, 10% masih dapat diterima.
+                    </p>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <summary class="font-semibold text-gray-800">Apakah Rumus Slovin cocok untuk semua jenis penelitian?</summary>
+                    <p class="mt-2 text-gray-600 text-sm">
+                        Tidak. Rumus Slovin paling cocok untuk penelitian deskriptif dengan populasi homogen. 
+                        Untuk penelitian inferensial atau populasi yang sangat heterogen, lebih baik menggunakan 
+                        metode sampling lain seperti stratified random sampling atau menggunakan rumus yang 
+                        memperhitungkan variasi data (seperti rumus Yamane atau Isaac & Michael).
+                    </p>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <summary class="font-semibold text-gray-800">Bagaimana jika populasi sangat besar?</summary>
+                    <p class="mt-2 text-gray-600 text-sm">
+                        Untuk populasi yang sangat besar (>100,000), hasil rumus Slovin akan mendekati nilai maksimal. 
+                        Dalam kasus ini, Anda bisa menggunakan rumus alternatif atau menetapkan batas maksimal sampel 
+                        berdasarkan feasibility dan resources yang tersedia.
+                    </p>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <summary class="font-semibold text-gray-800">Apakah hasil perhitungan harus dibulatkan?</summary>
+                    <p class="mt-2 text-gray-600 text-sm">
+                        Ya, karena jumlah sampel harus berupa bilangan bulat (tidak bisa mengambil 0.5 responden), 
+                        maka hasilnya harus dibulatkan ke atas untuk memastikan sampel yang cukup representatif.
+                    </p>
+                </details>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-lg mt-12">
+        <div class="container mx-auto px-6 py-6">
+            <div class="text-center text-gray-600">
+                <p class="font-semibold mb-2">💡 Tips Penelitian</p>
+                <p class="text-sm">
+                    Selalu tambahkan 10-20% dari hasil perhitungan untuk mengantisipasi non-response atau data yang tidak valid.
+                </p>
+                <p class="text-xs text-gray-500 mt-4">
+                    &copy; 2024 Kalkulator Rumus Slovin | Tool untuk Peneliti dan Akademisi
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle custom error input
+        document.getElementById('marginError').addEventListener('change', function() {
+            const customDiv = document.getElementById('customErrorDiv');
+            if (this.value === 'custom') {
+                customDiv.classList.remove('hidden');
+            } else {
+                customDiv.classList.add('hidden');
+            }
+        });
+
+        // Calculate sample size using Slovin's formula
+        function calculateSample() {
+            const population = parseInt(document.getElementById('population').value);
+            const marginErrorSelect = document.getElementById('marginError').value;
+            
+            let marginError;
+            if (marginErrorSelect === 'custom') {
+                marginError = parseFloat(document.getElementById('customError').value);
+            } else if (marginErrorSelect) {
+                marginError = parseFloat(marginErrorSelect);
+            }
+
+            // Validation
+            if (!population || population <= 0) {
+                showEmptyResult();
+                return;
+            }
+
+            if (!marginError || marginError <= 0 || marginError >= 1) {
+                showEmptyResult();
+                return;
+            }
+
+            // Slovin's Formula: n = N / (1 + N * e^2)
+            const sampleSize = population / (1 + (population * Math.pow(marginError, 2)));
+            const roundedSample = Math.ceil(sampleSize);
+            
+            // Calculate additional metrics
+            const percentage = ((roundedSample / population) * 100).toFixed(2);
+            const recommended = Math.ceil(roundedSample * 1.15); // Add 15% buffer
+            const confidenceLevel = ((1 - marginError) * 100).toFixed(0);
+
+            displayResult(population, marginError, sampleSize, roundedSample, percentage, recommended, confidenceLevel);
+        }
+
+        // Display calculation result
+        function displayResult(population, marginError, sampleSize, roundedSample, percentage, recommended, confidenceLevel) {
+            const resultContainer = document.getElementById('resultContainer');
+            
+            const marginErrorPercent = (marginError * 100).toFixed(0);
+            
+            resultContainer.innerHTML = `
+                <div class="space-y-4">
+                    <!-- Main Result -->
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl p-6 text-center">
+                        <p class="text-sm font-semibold mb-2 opacity-90">Jumlah Sampel yang Diperlukan</p>
+                        <p class="text-5xl font-bold mb-2">${roundedSample}</p>
+                        <p class="text-sm opacity-90">responden / sampel</p>
+                    </div>
+
+                    <!-- Detail Calculation -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <p class="font-semibold text-gray-800 mb-3">📝 Detail Perhitungan:</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Populasi (N):</span>
+                                <span class="font-semibold text-gray-800">${population.toLocaleString()}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Margin of Error (e):</span>
+                                <span class="font-semibold text-gray-800">${marginErrorPercent}% (${marginError})</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">e² (e kuadrat):</span>
+                                <span class="font-semibold text-gray-800">${Math.pow(marginError, 2).toFixed(4)}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">N × e²:</span>
+                                <span class="font-semibold text-gray-800">${(population * Math.pow(marginError, 2)).toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">1 + (N × e²):</span>
+                                <span class="font-semibold text-gray-800">${(1 + (population * Math.pow(marginError, 2))).toFixed(2)}</span>
+                            </div>
+                            <div class="border-t border-gray-300 my-2"></div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">n = N / (1 + N × e²):</span>
+                                <span class="font-semibold text-gray-800">${sampleSize.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Dibulatkan ke atas:</span>
+                                <span class="font-bold text-purple-700">${roundedSample}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 rounded-lg p-4 text-center">
+                            <p class="text-sm text-blue-600 font-semibold mb-1">Persentase Sampel</p>
+                            <p class="text-2xl font-bold text-blue-900">${percentage}%</p>
+                            <p class="text-xs text-blue-600 mt-1">dari total populasi</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 text-center">
+                            <p class="text-sm text-green-600 font-semibold mb-1">Rekomendasi +15%</p>
+                            <p class="text-2xl font-bold text-green-900">${recommended}</p>
+                            <p class="text-xs text-green-600 mt-1">dengan buffer cadangan</p>
+                        </div>
+                    </div>
+
+                    <!-- Interpretation -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 rounded-lg p-4">
+                        <p class="font-semibold text-yellow-800 mb-2">💡 Interpretasi Hasil:</p>
+                        <ul class="space-y-1 text-sm text-yellow-900">
+                            <li>• Dari populasi sebesar <strong>${population.toLocaleString()}</strong> orang</li>
+                            <li>• Anda perlu mengambil minimal <strong>${roundedSample} responden</strong></li>
+                            <li>• Dengan margin of error <strong>${marginErrorPercent}%</strong></li>
+                            <li>• Disarankan mengambil <strong>${recommended} responden</strong> (termasuk buffer 15%)</li>
+                            <li>• Hasil penelitian akan representatif untuk menggambarkan populasi</li>
+                        </ul>
+                    </div>
+
+                    <!-- Download Button -->
+                    <button onclick="downloadResult()" 
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+                        📥 Download Hasil Perhitungan
+                    </button>
+                </div>
+            `;
+        }
+
+        // Show empty result
+        function showEmptyResult() {
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = `
+                <div class="text-center py-12 text-gray-400">
+                    <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    <p class="text-lg">Masukkan data untuk melihat hasil perhitungan</p>
+                </div>
+            `;
+        }
+
+        // Load example data
+        function loadExample(pop, error) {
+            document.getElementById('population').value = pop;
+            
+            // Set margin of error
+            const marginSelect = document.getElementById('marginError');
+            if (error === 0.05 || error === 0.1 || error === 0.01) {
+                marginSelect.value = error.toString();
+                document.getElementById('customErrorDiv').classList.add('hidden');
+            } else {
+                marginSelect.value = 'custom';
+                document.getElementById('customErrorDiv').classList.remove('hidden');
+                document.getElementById('customError').value = error;
+            }
+            
+            calculateSample();
+            
+            // Smooth scroll to result
+            window.scrollTo({
+                top: document.getElementById('resultContainer').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // Reset calculator
+        function resetCalculator() {
+            document.getElementById('population').value = '';
+            document.getElementById('marginError').value = '0.1';
+            document.getElementById('customError').value = '';
+            document.getElementById('customErrorDiv').classList.add('hidden');
+            showEmptyResult();
+        }
+
+        // Download result as text
+        function downloadResult() {
+            const population = document.getElementById('population').value;
+            const marginErrorSelect = document.getElementById('marginError').value;
+            
+            let marginError;
+            if (marginErrorSelect === 'custom') {
+                marginError = document.getElementById('customError').value;
+            } else {
+                marginError = marginErrorSelect;
+            }
+
+            const sampleSize = population / (1 + (population * Math.pow(marginError, 2)));
+            const roundedSample = Math.ceil(sampleSize);
+            const recommended = Math.ceil(roundedSample * 1.15);
+            
+            const text = `
+HASIL PERHITUNGAN RUMUS SLOVIN
+================================
+
+DATA INPUT:
+- Jumlah Populasi (N): ${population}
+- Margin of Error (e): ${(marginError * 100).toFixed(0)}% (${marginError})
+
+RUMUS:
+n = N / (1 + N × e²)
+
+PERHITUNGAN:
+n = ${population} / (1 + ${population} × ${marginError}²)
+n = ${population} / (1 + ${(population * Math.pow(marginError, 2)).toFixed(2)})
+n = ${population} / ${(1 + (population * Math.pow(marginError, 2))).toFixed(2)}
+n = ${sampleSize.toFixed(2)}
+
+HASIL:
+- Jumlah Sampel Minimal: ${roundedSample} responden
+- Rekomendasi (dengan buffer 15%): ${recommended} responden
+- Persentase dari Populasi: ${((roundedSample / population) * 100).toFixed(2)}%
+
+INTERPRETASI:
+Dari populasi sebesar ${population} orang, Anda perlu mengambil minimal 
+${roundedSample} responden dengan margin of error ${(marginError * 100).toFixed(0)}%. 
+Disarankan mengambil ${recommended} responden untuk mengantisipasi 
+non-response atau data tidak valid.
+
+Generated by: Kalkulator Rumus Slovin
+Tanggal: ${new Date().toLocaleDateString('id-ID')}
+            `.trim();
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Hasil_Slovin_${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        showEmptyResult();
+    </script>
+
+</body>
+</html>
